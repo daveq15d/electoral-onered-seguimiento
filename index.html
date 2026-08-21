@@ -113,7 +113,8 @@ function updateStats(){
  $('pct').textContent=pct+'%';$('bar').style.width=pct+'%';$('doneCount').textContent=done;$('pendingCount').textContent=total-done;$('p0Count').textContent=TASKS.filter(t=>t.priority==='P0'&&!state(t.id).done).length;
 }
 function render(){renderGroups();renderTasks();updateStats()}
-['search','status','priority','size'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',render));
+$('search').addEventListener('input',()=>{if($('search').value.trim())selected='all';render()});
+['status','priority','size'].forEach(id=>$(id).addEventListener('change',render));
 $('exportBtn').onclick=()=>{
  const payload={app:'OneRed Tracker',version:1,exportedAt:new Date().toISOString(),source:'Documento_12_Backlog_Tecnico_y_Roadmap.md',progress:saved};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='onered-progreso-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
